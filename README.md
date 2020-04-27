@@ -4,7 +4,7 @@ Task time series at CoronaWhy currently has two active sub-tasks.
 
 ## Disease Modeling 
 
-[Google Doc]()
+[Wiki Overview](https://github.com/CoronaWhy/task-ts/wiki/Pandemic-Modeling)
 
 This sub-task focuses on modeling the diesase spread. Specifically, here we want to forecast the number of cases, critical care beds used, and deaths at different level of geographic granularity. We also want to explore what features the model considers important to predicting these in order to provide insights.
 
