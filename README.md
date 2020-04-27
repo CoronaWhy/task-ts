@@ -1,14 +1,28 @@
-# CoronaWhy Time Series Modeling
+# CoronaWhy Time Series Modeling Task Force
 
-Task time series at CoronaWhy currently has two active sub-tasks.
+<p align="left">
+<img width=15% src="https://uploads-ssl.webflow.com/5e729ef3ef0f906b804d4f27/5e77e9db1ede36135bbb1927_logo%203%402x.png" alt=“CoronaWhy” />
 
-## Disease Modeling 
+<i>A worldwide effort by volunteers to fight Coronavirus (COVID-19)</i>
+</p>
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CoronaWhy/task-ts/master?filepath=notebooks)
+
+## About CoronaWhy Time Series Modeling Team
+
+The Time Series Modeling Task Team is a subgroup of the CoronaWhy team, it is formed by an interdisciplinary group of volunteers from across the world focused on understand how the many different geography-related factors may affect the spread of the virus.
+
+The team is currently being led by Isaac (@isaacmg).
+
+We are currently focusing on two streams:
+
+### Disease Modeling 
 
 [Wiki Overview](https://github.com/CoronaWhy/task-ts/wiki/Pandemic-Modeling)
 
 This sub-task focuses on modeling the diesase spread. Specifically, here we want to forecast the number of cases, critical care beds used, and deaths at different level of geographic granularity. We also want to explore what features the model considers important to predicting these in order to provide insights.
 
-## Critical Care Forecasting
+### Critical Care Forecasting
 
 [Google Doc](https://docs.google.com/document/d/1KjigohhZW6uJAkhVZVf6oftL6QWGa9A6w_FjYl-AfnY)
 
