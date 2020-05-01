@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
 from tensorflow import keras
+import tensorflow as tf
 from wandb.keras import WandbCallback 
 import wandb
+import numpy as np
+
 def train(x_train_full, y_train_full, test, test_first, scaler, config_default):
   run = wandb.init(project="covid-forecast", config=config_default, magic=True)
   config = wandb.config
