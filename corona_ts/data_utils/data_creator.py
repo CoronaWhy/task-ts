@@ -17,5 +17,9 @@ def loop_through_locations(df:pd.DataFrame, column:str='full_county', cut_thresh
     return df_county_list 
 
 def incorporate_data(df):
+    """
+    Function to join together based 
+    on time-stamps.
+    """
     pass 
     

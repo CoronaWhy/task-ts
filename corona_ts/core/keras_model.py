@@ -36,36 +36,36 @@ def train(x_train_full, y_train_full, test, test_first, scaler, config_default):
   evaluate_plot_multi(model, test_first, config, X_test, scaler)
   return model
 
-def evaluate_single(model, x_test, y_test, scaler):
-  y_preds = model.predict(x_test)
-  y_preds = scaler.inverse_transform(y_preds)
-  y_test = scaler.inverse_transform(y_test)
-  complete_mse = tf.keras.losses.MSE( y_preds[:, 1], y_test[:, 1])
-  wandb.run.summary["test_mse"] = complete_mse
-  return complete_mse
+def evaluate_single(model, x_test, y_test, scaler)->float:
+    y_preds = model.predict(x_test)
+    y_preds = scaler.inverse_transform(y_preds)
+    y_test = scaler.inverse_transform(y_test)
+    complete_mse = tf.keras.losses.MSE( y_preds[:, 1], y_test[:, 1])
+    wandb.run.summary["test_mse"] = complete_mse
+    return complete_mse
 
 def evaluate_plot_multi(model, test_orig, config, x_test, scaler, predictor="new_cases"):
-  arr = predict_multi(model, len(test_orig)-config["seq_len"], x_test[0, :, :], config)
-  test_orig['predicted_cases'] = 0
-  test_orig['predicted_cases'][config["seq_len"]:] = scaler.inverse_transform(arr.squeeze(0))[:, 1]
-  plt.plot(test_orig['predicted_cases'], label='predicted_cases')
-  plt.plot(test_orig[predictor], label='actual_cases')
-  plt.legend();
-  wandb.log({"test":plt})
-  plt.plot(test_orig['predicted_cases'], label='predicted_cases')
-  plt.plot(test_orig[predictor], label='actual_cases')
-  plt.legend();
-  wandb.Image(plt, caption="Plot")
-  large_mse = tf.keras.losses.MSE(
-    scaler.inverse_transform(arr.squeeze(0))[:, 1], test_orig[predictor][config["seq_len"]:].values
-  )
-  wandb.run.summary["test_mse_full"] =  large_mse
-  return large_mse
+    arr = predict_multi(model, len(test_orig)-config["seq_len"], x_test[0, :, :], config)
+    test_orig['predicted_cases'] = 0
+    test_orig['predicted_cases'][config["seq_len"]:] = scaler.inverse_transform(arr.squeeze(0))[:, 1]
+    plt.plot(test_orig['predicted_cases'], label='predicted_cases')
+    plt.plot(test_orig[predictor], label='actual_cases')
+    plt.legend()
+    wandb.log({"test":plt})
+    plt.plot(test_orig['predicted_cases'], label='predicted_cases')
+    plt.plot(test_orig[predictor], label='actual_cases')
+    plt.legend()
+    wandb.Image(plt, caption="Plot")
+    large_mse = tf.keras.losses.MSE(
+        scaler.inverse_transform(arr.squeeze(0))[:, 1], test_orig[predictor][config["seq_len"]:].values
+    )
+    wandb.run.summary["test_mse_full"] =  large_mse
+    return large_mse
 
 def predict_multi(model, time_steps, start_rows, config):
-  start_rows=np.expand_dims(start_rows, axis=0)
-  for i in range(0, time_steps):
-    out = model.predict(start_rows[:, i:, :])
-    out = out[np.newaxis, ...]
-    start_rows = np.concatenate((start_rows, out), axis=1)
-  return start_rows[:, config["seq_len"]:, :]
+    start_rows=np.expand_dims(start_rows, axis=0)
+    for i in range(0, time_steps):
+        out = model.predict(start_rows[:, i:, :])
+        out = out[np.newaxis, ...]
+        start_rows = np.concatenate((start_rows, out), axis=1)
+    return start_rows[:, config["seq_len"]:, :]
