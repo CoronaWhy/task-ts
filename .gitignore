@@ -1,0 +1,9 @@
+# cache
+*.DS_Store
+*.vscode/
+*corona_ts/__pycache__/
+*corona_ts/data_utils/__pycache__/
+*.ipynb_checkpoints/
+
+# data
+*.csv
