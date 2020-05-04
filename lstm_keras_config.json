@@ -1,0 +1,5 @@
+{"epochs":30, "validation_split":0.1, 
+    "loss":"mean_squared_error", "optimizer":"adam", 
+    "geo_segment":county_name, "seq_len":7, "train_steps":60, 
+    "test_steps":27, "scaler":"RobustScaler", "new_cases":true, 
+    "beta":0.899, "additional_features":["none"]}
