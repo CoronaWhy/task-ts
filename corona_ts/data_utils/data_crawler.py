@@ -41,18 +41,18 @@ def time_series_formatter(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
     df["date"] = pd.to_datetime(df["date"])
+    # drop city level
+    df = df.loc[~(df["level"] == "city")]
     # drop growth_factor due to 100% missing
     df = df.reindex(
         columns=[
             "country",
             "region",
             "sub_region",
-            "city",
             "lat",
             "long",
             "date",
             "level",
-            "tz",
             "cases",
             "deaths",
             "recovered",
@@ -62,7 +62,9 @@ def time_series_formatter(df: pd.DataFrame) -> pd.DataFrame:
             "discharged",
         ]
     )
-    df["level"] = df["level"].map({"state": "region", "county": "sub_region"})
+    df["level"] = df["level"].map(
+        {"country": "country", "state": "region", "county": "sub_region"}
+    )
 
     metrics = [
         "cases",
@@ -88,9 +90,13 @@ def load_data() -> pd.DataFrame:
     Returns:
         pd.DataFrame:
     """
+    index_cols = ["level", "country", "region", "sub_region", "date"]
     ts_df = time_series_formatter(fetch_time_series())
-    mobility_df = fetch_mobility_data()
+    ts_df = ts_df.set_index(index_cols)
+    # drop duplicated rows
+    ts_df = ts_df[~ts_df.index.duplicated()]
 
+    mobility_df = fetch_mobility_data()
     metrics = [
         "retail_recreation",
         "grocery_pharmacy",
@@ -99,37 +105,22 @@ def load_data() -> pd.DataFrame:
         "workplaces",
         "residential",
     ]
-    # Incorporate mobility data
-    # Country level
-    mobility_country_df = mobility_df.loc[
-        mobility_df["region"].isnull(), metrics + ["country", "date"]
-    ]
-    mobility_country_df.columns = ["country_" + x for x in metrics] + [
-        "country",
-        "date",
-    ]
-    # Region level
-    mobility_region_df = mobility_df.loc[
-        ~mobility_df["region"].isnull(),
-        metrics + ["country", "region", "date"],
-    ]
-    mobility_region_df.columns = ["region_" + x for x in metrics] + [
-        "country",
-        "region",
-        "date",
-    ]
 
-    # Merge dataframe
-    enriched_ts_df = pd.merge(
-        ts_df, mobility_country_df, on=["country", "date"], how="left"
-    )
-    enriched_ts_df = pd.merge(
-        enriched_ts_df,
-        mobility_region_df,
-        on=["country", "region", "date"],
-        how="left",
-    )
-    return enriched_ts_df
+    mobility_df.loc[mobility_df["region"].isnull(), "level"] = "country"
+    mobility_df.loc[
+        (~mobility_df["region"].isnull())
+        & (mobility_df["sub_region"].isnull()),
+        "level",
+    ] = "region"
+    mobility_df.loc[
+        ~mobility_df["sub_region"].isnull(), "level"
+    ] = "sub_region"
+
+    mobility_df = mobility_df.set_index(index_cols)[metrics]
+
+    # Incorporate mobility data
+    enriched_ts_df = pd.concat([ts_df, mobility_df], axis=1, join="inner")
+    return enriched_ts_df.reset_index()
 
 
 if __name__ == "__main__":
