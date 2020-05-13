@@ -49,7 +49,9 @@ def get_weather_time_series_all(df, parallel_jobs=20) -> pd.DataFrame:
     return pd.concat([x for x in weather_results if x is not None])
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
+    # note: you might not want to keep redoing this as calling the data for all ~3000 locations we have
+    # on the timeseries takes ~30mins on a good network connection
     filepath = DATA_DIR / 'timeseries_with_weather_mobility.csv'
     download = False
     if filepath.is_file() and not download:
