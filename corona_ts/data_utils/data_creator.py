@@ -5,7 +5,7 @@ def loop_through_locations(df:pd.DataFrame, column:str='full_county', cut_thresh
     Function to split data-frame based on state or county.
     """
     df_county_list = []
-    df['full_county'] = df['state'] + "_" + df['county'] 
+    df['full_county'] = df['region'] + "_" + df['sub_region'] 
     for code in df['full_county'].unique():
         mask = df['full_county'] == code
         df_code = df[mask]
