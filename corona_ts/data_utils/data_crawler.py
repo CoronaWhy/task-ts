@@ -117,6 +117,7 @@ def load_data() -> pd.DataFrame:
     ] = "sub_region"
 
     mobility_df = mobility_df.set_index(index_cols)[metrics]
+    mobility_df.columns = ["mobility_" + x for x in metrics]
 
     # Incorporate mobility data
     enriched_ts_df = pd.concat([ts_df, mobility_df], axis=1, join="inner")
@@ -126,4 +127,4 @@ def load_data() -> pd.DataFrame:
 if __name__ == "__main__":
     # for testing only
     df = load_data()
-    df.head()
+    df.head().to_csv("test.csv")
