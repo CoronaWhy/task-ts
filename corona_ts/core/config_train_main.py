@@ -2,8 +2,8 @@ import wandb
 from datetime import datetime, date
 
 
-def generate_training_config(file_path, feature_columns, target_column, df_len, weight_path=None, custom_config={}):
-    run = wandb.init(project="covid-forecast")
+def generate_training_config(file_path, feature_columns, target_column, df_len, weight_path=None, custom_config={}, wandb_run_name=None):
+    run = wandb.init(project="covid-forecast", name=wandb_run_name)
     wandb_config = wandb.config
     train_number = df_len * .7
     validation_number = df_len * .9

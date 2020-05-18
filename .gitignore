@@ -8,3 +8,4 @@ wandb
 model_save
 # data
 *.csv
+*.egg*
