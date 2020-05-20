@@ -1,8 +1,9 @@
 import unittest
+from corona_ts.data_utils.data_crawler import load_data
 class TestCoreMethods(unittest.TestCase):
 
     def test_upper(self):
-        self.assertEqual('foo'.upper(), 'FOO')
+        self.assertTrue(len(load_data()))
 
     def test_isupper(self):
         self.assertTrue('FOO'.isupper())
