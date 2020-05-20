@@ -4,6 +4,8 @@ python:    # current default Python on Travis CI
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+  # Hack until task-geo fixes their repo.
+  - wget -O /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/task_geo/data_sources/noaa/country_stations_map.json https://raw.githubusercontent.com/CoronaWhy/task-geo/master/task_geo/data_sources/noaa/country_stations_map.json
 # command to run tests
 script:
   - python core_test.py
