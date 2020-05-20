@@ -11,7 +11,7 @@
 
 ## About CoronaWhy Time Series Modeling Team
 
-The Time Series Mosdeling Task Team is a subgroup of the CoronaWhy team, it is formed by an interdisciplinary group of volunteers from across the world focused on understanding how the many different geography-related factors may affect the spread of the virus.
+The Time Series Mosdeling Task Team is a subgroup of the CoronaWhy team, it is formed by an interdisciplinary group of volunteers from across the world focused on understand how the many different geography-related factors may affect the spread of the virus.
 
 The team is currently being led by Isaac (@isaacmg).
 
