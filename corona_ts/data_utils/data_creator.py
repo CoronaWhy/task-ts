@@ -14,3 +14,8 @@ def loop_through_locations(df:pd.DataFrame, column:str='full_county', cut_thresh
             df_county_list.append(df_code)
     return df_county_list 
 
+def format_proper(region_df)->pd.DataFrame:
+    df.index = df['date']
+    df.sort_values(by='date')
+    df['new_cases']=df['cases'].diff()
+    return df 
