@@ -7,6 +7,7 @@
 </p>
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/CoronaWhy/task-ts/master?filepath=notebooks)
+[![Build Status](https://travis-ci.org/coronawhy/task-ts.svg?branch=master)](https://travis-ci.org/coronawhy/task-ts)
 
 ## About CoronaWhy Time Series Modeling Team
 
@@ -22,7 +23,7 @@ We are currently focusing on two streams:
 
 This sub-task focuses on modeling the diesase spread. Specifically, here we want to forecast the number of cases, critical care beds used, and deaths at different level of geographic granularity. We also want to explore what features the model considers important to predicting these in order to provide insights.
 
-### Critical Care Forecasting
+### Critical Care Forecasting (blocked due to lack of ICU data)
 
 [Google Doc](https://docs.google.com/document/d/1KjigohhZW6uJAkhVZVf6oftL6QWGa9A6w_FjYl-AfnY)
 

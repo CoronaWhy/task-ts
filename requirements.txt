@@ -1,6 +1,6 @@
 loguru
 pandas
 tensorflow
-git+https://github.com/CoronaWhy/task-geo.git
+taskgeo @ git+https://github.com/CoronaWhy/task-geo.git
 tqdm
 joblib
