@@ -52,7 +52,8 @@ if __name__ == "__main__":
     df = pd.read_csv(data_dir / "timeseries_with_weather_mobility.csv", parse_dates=["date"])
     logger.info("data read okay")
     
-    locations_df = loop_through_locations(df)
+    locations_df = loop_through_locations(df, columns_to_consider_for_uniqueness=['country', 'region', 'sub_region'],
+                                          unique_column_name='region_identifier')
 
     italian_regions = [
         'Italy__Calabria__',
