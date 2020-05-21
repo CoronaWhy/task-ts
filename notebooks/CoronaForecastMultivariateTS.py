@@ -82,15 +82,15 @@ if __name__ == "__main__":
     query = "region_identifier=='{}'"
     for region in italian_regions:
         region_df, dataset_length, file_path = format_corona_data(df.query(query.format(region)), region, temp_training_data_dir)
-        sweep_id = wandb.sweep(generate_wandb_sweep_config(f"Multivariate TS sweep (baseline, only new cases as features) -- {region}"), project="covid-forecast")
+        sweep_id = wandb.sweep(generate_wandb_sweep_config(f"Multivariate TS sweep new cases, mobility, weather -- {region}"), project="covid-forecast")
         wandb.agent(
             sweep_id,
             lambda: train_function(
                 "PyTorch", generate_training_config(str(file_path), feature_columns=[
-                   #  'retail_recreation', 'grocery_pharmacy',
-                   # 'parks', 'transit_stations', 'workplaces', 'residential',
-                   # 'avg_temperature', 'min_temperature', 'max_temperature',
-                   # 'relative_humidity', 'specific_humidity', 'pressure',
+                    'retail_recreation', 'grocery_pharmacy',
+                   'parks', 'transit_stations', 'workplaces', 'residential',
+                   'avg_temperature', 'min_temperature', 'max_temperature',
+                   'relative_humidity', 'specific_humidity', 'pressure',
                     "new_cases"],
                 target_column=["new_cases"], df_len=dataset_length)))
 
