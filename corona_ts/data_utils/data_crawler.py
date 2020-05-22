@@ -1,3 +1,4 @@
+from typing import Dict, List
 from pathlib import Path
 from loguru import logger
 import urllib.request
@@ -84,6 +85,56 @@ def fetch_mobility_data() -> pd.DataFrame:
     return mobility()
 
 
+def _find_min_values(df: pd.DataFrame) -> Dict[str, float]:
+    """Return the min of each column as a dictionary
+
+    Args:
+        df (pd.DataFrame): dataframe
+
+    Returns:
+        Dict[str, float]: dictionary with min valus for each columns
+    """
+    return df.min().to_dict()
+
+
+def _treat_mobility_missing_values(mobility_df: pd.DataFrame) -> pd.DataFrame:
+    """Treat missing values in mobility data
+
+    Due to privacy reasons, missing values in mobility data are present
+    when there is not sufficient data to ensure anonymity.
+    More details: 
+    https://www.google.com/covid19/mobility/data_documentation.html?hl=en#about-this-data
+
+    Missing values are due to lack of data, ie. lack of visits. 
+    Therefore, we can infer that visits to a location dropped significantly.
+
+    Treating missing value strategy:
+    - Use the mimimum value of a (location, column) to fill missing value
+    - When all data are missing for a (location, column), fillna with 0
+
+    Args:
+        mobility_df (pd.DataFrame): raw mobility dataframe
+
+    Returns:
+        pd.DataFrame: treated mobility dataframe
+    """
+    logger.info("Treat mobility missing values.")
+    treated_dataframes: List[pd.DataFrame] = []
+    levels = ["sub_region", "region", "country"]
+    for i, level in enumerate(levels):
+        df = mobility_df.loc[level]
+        df = df.groupby(levels[i:]).apply(
+            lambda x: x.fillna(_find_min_values(x))
+        )
+        df = df.fillna(0).reset_index()
+        df["level"] = level
+        treated_dataframes.append(df)
+
+    treated_df = pd.concat(treated_dataframes)
+
+    return treated_df.set_index(["level"] + levels[::-1] + ["date"])
+
+
 def load_data() -> pd.DataFrame:
     """Load time series data enriched with mobility data
 
@@ -118,6 +169,9 @@ def load_data() -> pd.DataFrame:
 
     mobility_df = mobility_df.set_index(index_cols)[metrics]
     mobility_df.columns = ["mobility_" + x for x in metrics]
+
+    # treat missing values in mobility data
+    mobility_df = _treat_mobility_missing_values(mobility_df)
 
     # Incorporate mobility data
     enriched_ts_df = pd.concat([ts_df, mobility_df], axis=1, join="inner")
