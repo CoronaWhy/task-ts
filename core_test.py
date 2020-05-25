@@ -9,7 +9,7 @@ class TestCoreMethods(unittest.TestCase):
     def test_region(self):
         df = load_data()
         df_ny = region_df_format(df, 'New York_New York County')
-        self.assertTrue(df_ny.any())
+        self.assertTrue(len(df_ny))
         self.assertEqual(df_ny.iloc[0]['new_cases'], 0)
         self.assertEqual(df_ny.iloc[0]['deaths'], 0)
     
