@@ -158,7 +158,7 @@ def make_config_file(file_path, df_len, weight_path=None):
     return config_default
 
 
-def make_config():
+def wandb_make_config():
   sweep_config = {
     "name": "Default sweep",
     "method": "grid",
