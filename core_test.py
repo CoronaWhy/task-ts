@@ -15,8 +15,8 @@ class TestCoreMethods(unittest.TestCase):
     
     def test_loop_through(self):
         df = load_data()
-        df_list = loop_through_locations(df, 90)
-        self.assertGreater(len(df_list), 50)
+        df_list = loop_through_locations(df, minimum_datapoints_threshold=70)
+        self.assertGreater(len(df_list), 45)
         
 if __name__ == '__main__':
     unittest.main()
