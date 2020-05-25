@@ -19,10 +19,10 @@ def loop_through_locations(
         ts_count = len(df_code)
         if ts_count > minimum_datapoints_threshold:
             unique_df_list.append(df_code)
-    return unique_df_list
+    return df, unique_df_list
 
 def region_df_format(df, sub_region, region_name='full_county'):
-  region_df = df[df['full_county']==sub_region]
+  region_df = df[df[region_name]==sub_region]
   region_df = region_df.sort_values(by='date')
   region_df.index = region_df.date
   region_df['new_cases'] = region_df['cases'].diff()
