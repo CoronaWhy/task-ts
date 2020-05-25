@@ -21,3 +21,10 @@ def loop_through_locations(
             unique_df_list.append(df_code)
     return unique_df_list
 
+def region_df_format(df, sub_region):
+  region_df = df[df['sub_region']==sub_region]
+  region_df = region_df.sort_values(by='date')
+  region_df.index = region_df.date
+  region_df['new_cases'] = region_df['cases'].diff()
+  region_df['weekday'] = region_df['date'].map(lambda x: x.strftime('%w'))
+  return region_df
