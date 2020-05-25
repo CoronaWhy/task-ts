@@ -4,6 +4,8 @@
 *corona_ts/__pycache__/
 *corona_ts/data_utils/__pycache__/
 *.ipynb_checkpoints/
-
+wandb
+model_save
 # data
 *.csv
+*.egg*
