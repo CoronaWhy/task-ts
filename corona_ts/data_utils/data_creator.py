@@ -21,12 +21,8 @@ def loop_through_locations(
             unique_df_list.append(df_code)
     return unique_df_list
 
-def region_df_format(df, sub_region, region_name='county'):
-  if region_name == 'county':
-    region_name = region_df['full_county'].iloc[0]
-  else:
-    region_name = region_df['state'].iloc[0]
-  region_df = df[df['sub_region']==sub_region]
+def region_df_format(df, sub_region, region_name='full_county'):
+  region_df = df[df['full_county']==sub_region]
   region_df = region_df.sort_values(by='date')
   region_df.index = region_df.date
   region_df['new_cases'] = region_df['cases'].diff()
