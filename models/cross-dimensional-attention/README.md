@@ -21,4 +21,4 @@ benchmarks and our newly collected NYC-traffic dataset, demonstrate that our
 approach outperforms the state-of-the-art imputation and forecasting methods. A
 detailed systematic analysis confirms the effectiveness of our design choices.
 
-![](https://drive.google.com/file/d/1U-N4c0d3w-pTYc3cFd3iWVbaaFWinNb7/view?usp=sharing)
+![image](https://drive.google.com/uc?export=view&id=1U-N4c0d3w-pTYc3cFd3iWVbaaFWinNb7)
