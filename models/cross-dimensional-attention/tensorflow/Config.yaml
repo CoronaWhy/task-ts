@@ -1,0 +1,55 @@
+---
+# === Configure Main function === #
+category: Traffic-NYC
+data_name: data_mask_maximum
+mask_name: burst_70
+meas_index: 1
+model_name: MDAnalyzer
+result_dir: Result
+result_model: Model-Config
+result_data: Validation-Result
+GPU: 1
+# === Configure Model Handler === #
+# Data Assignment
+batch_size: 19
+period_enc: 432
+period_dec: 432
+
+# Model training Controler
+epoch_iter: 600
+epochs: 100
+patience: 50
+learning_rate: 0.001
+lr_decay: 0.3
+lr_decay_epoch: 20
+lr_decay_interval: 15
+loss_func: RMSE
+upbound: 1
+max_grad_norm: 5.0
+
+# === Configure in MDAnalyzer Model pipeline === #
+# Frame: Sequence Element-wise-addition Concatenation Dimension-reduce Independent
+model_structure: Sequence
+num_enclayer: 7
+num_declayer: 7
+num_heads: 12
+units_IDw: 14
+units_Timew: 6
+# Query, Key and Value
+time_stride_AM: 1
+time_stride_V: 1
+time_fuse_AM: 1
+time_fuse_V: 1
+units_value: 3
+units_weight: 12
+drop_rate_attention: 0.0
+# Filter SetUp
+units_conv: 8
+units_pred: 8
+filter_encdec: dense
+filter_pred: dense
+drop_rate_forward: 0.1
+# Mask label
+flag_identity: False
+flag_time: False
+flag_imputation: True
