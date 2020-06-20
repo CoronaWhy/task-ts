@@ -10,11 +10,14 @@ from airflow import DAG, settings
 # Connects to GoogleCloud
 from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
 # These args will get passed on to each operator
-import json 
+import json, os
 import pandas as pd
 import numpy as np
 # Needed for load_data
 from corona_ts.data_utils.data_crawler import load_data
+
+# Setting environment key for GCP path
+os.environ["GCP_KEY_PATH"] = '/home/efawe/airflow/dags/task-ts-53924e1e3506.json'
 
 def add_gcp_connection(**kwargs):
     new_conn = Connection(
@@ -24,7 +27,7 @@ def add_gcp_connection(**kwargs):
     extra_field = {
         "extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform",
         "extra__google_cloud_platform__project": "task-ts",
-        "extra__google_cloud_platform__key_path": '/home/efawe/airflow/dags/task-ts-562f84386e61.json'
+        "extra__google_cloud_platform__key_path": os.environ["GCP_KEY_PATH"]
     }
 
     session = settings.Session()
@@ -40,22 +43,22 @@ def add_gcp_connection(**kwargs):
         session.add(new_conn)
         session.commit()
 
-def dataToGCS(csv_name: str, folder_name: str,
+def data_to_GCS(csv_name: str, folder_name: str,
                    bucket_name="task_ts_data", **kwargs):
     hook = GoogleCloudStorageHook()
     data = load_data()
     df = pd.DataFrame(data=data)
-    df.to_csv('mobility_data.csv', index=False)
+    df.to_csv('corona_data.csv', index=False)
 
     hook.upload(bucket_name, 
                 object='{}/{}.csv'.format(folder_name, csv_name), 
-                filename='mobility_data.csv', 
+                filename='corona_data.csv', 
                 mime_type='text/csv')
 
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': days_ago(2),
+    'start_date': days_ago(1),
     'email': ['airflow@example.com'],
     'email_on_failure': False,
     'email_on_retry': False,
@@ -79,24 +82,24 @@ dag = DAG(
     'load_data_forecast',
     default_args=default_args,
     description='DAG to populate mobility data for forecast team',
-    schedule_interval=timedelta(days=1),
+    schedule_interval='@daily',
 )
 
-activateGCP = PythonOperator(
+activate_GCP = PythonOperator(
         task_id='add_gcp_connection_python',
         python_callable=add_gcp_connection,
         provide_context=True,
         dag = dag,
     )
 
-dataToGCS_task = PythonOperator(
-        task_id='simpleNumpyToGCS',
-        python_callable=dataToGCS,
+data_to_GCS_task = PythonOperator(
+        task_id='data_to_GCS_python',
+        python_callable=data_to_GCS,
         provide_context=True,
-        op_kwargs={'csv_name': 'mobility_data', 'folder_name': 'airflow'},
+        op_kwargs={'csv_name': 'corona_data', 'folder_name': str(datetime.datetime.today().date())},
         dag =dag
     )
 
 dag.doc_md = __doc__
 
-activateGCP >>  dataToGCS_task
+activate_GCP >>  data_to_GCS_task
