@@ -15,11 +15,16 @@ def fetch_time_series() -> pd.DataFrame:
     Returns:
         pd.DataFrame: raw timeseries data at county/sub-region level
     """
+    """ Old function
+        if not time_series_path.exists():
+            logger.info("Time series not present locally, downloading...")
+            url = "https://coronadatascraper.com/timeseries.csv"
+            urllib.request.urlretrieve(url, time_series_path)
+    """
     time_series_path = DATA_DIR / "timeseries.csv"
-    if not time_series_path.exists():
-        logger.info("Time series not present locally, downloading...")
-        url = "https://coronadatascraper.com/timeseries.csv"
-        urllib.request.urlretrieve(url, time_series_path)
+    logger.info("Pulling current time series data, downloading...")
+    url = "https://coronadatascraper.com/timeseries.csv"
+    urllib.request.urlretrieve(url, time_series_path)
 
     time_series_df = pd.read_csv(time_series_path)
     return time_series_df
