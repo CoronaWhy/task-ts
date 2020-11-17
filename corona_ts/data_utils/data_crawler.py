@@ -179,7 +179,7 @@ def load_data() -> pd.DataFrame:
     mobility_df = _treat_mobility_missing_values(mobility_df)
 
     # Incorporate mobility data
-    enriched_ts_df = pd.concat([ts_df, mobility_df], axis=1, join="inner")
+    enriched_ts_df = ts_df.reset_index().merge(mobility_df.reset_index(), how='inner',on=index_cols)
     return enriched_ts_df.reset_index()
 
 
