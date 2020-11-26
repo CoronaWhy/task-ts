@@ -10,14 +10,14 @@ from airflow import DAG, settings
 # Connects to GoogleCloud
 from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
 # These args will get passed on to each operator
-import json, os
+import json, os, datetime
 import pandas as pd
 import numpy as np
 # Needed for load_data
 from corona_ts.data_utils.data_crawler import load_data
 
 # Setting environment key for GCP path
-os.environ["GCP_KEY_PATH"] = '/home/efawe/airflow/dags/task-ts-53924e1e3506.json'
+os.environ["GCP_KEY_PATH"] = "./cred.json" #ENV variable /TODO
 
 def add_gcp_connection(**kwargs):
     new_conn = Connection(
