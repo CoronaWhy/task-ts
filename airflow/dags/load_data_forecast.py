@@ -17,7 +17,7 @@ import numpy as np
 from corona_ts.data_utils.data_crawler import load_data
 
 # Setting environment key for GCP path
-os.environ["GCP_KEY_PATH"] = "./cred.json" #ENV variable /TODO
+os.environ["GCP_KEY_PATH"] = "/work/dags/cred.json" #ENV variable /TODO
 
 def add_gcp_connection(**kwargs):
     new_conn = Connection(
@@ -26,7 +26,7 @@ def add_gcp_connection(**kwargs):
     )
     extra_field = {
         "extra__google_cloud_platform__scope": "https://www.googleapis.com/auth/cloud-platform",
-        "extra__google_cloud_platform__project": "task-ts",
+        "extra__google_cloud_platform__project": "coronawhy-gcp-2",
         "extra__google_cloud_platform__key_path": os.environ["GCP_KEY_PATH"]
     }
 
@@ -44,7 +44,7 @@ def add_gcp_connection(**kwargs):
         session.commit()
 
 def data_to_GCS(csv_name: str, folder_name: str,
-                   bucket_name="task_ts_data", **kwargs):
+                   bucket_name="task_ts_data-2", **kwargs):
     hook = GoogleCloudStorageHook()
     data = load_data()
     df = pd.DataFrame(data=data)
