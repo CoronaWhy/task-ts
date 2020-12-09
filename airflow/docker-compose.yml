@@ -7,7 +7,8 @@ services:
         #image: puckel/docker-airflow:1.10.9
         restart: always
         volumes:
-            - ./dags:/usr/local/airflow/dags
+            - ./:/work
+            # - ./dags:/usr/local/airflow/dags
             # - ./plugins:/usr/local/airflow/plugins
         ports:
             - "8080:8080"
