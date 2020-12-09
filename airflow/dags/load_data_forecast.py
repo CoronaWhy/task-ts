@@ -44,7 +44,7 @@ def add_gcp_connection(**kwargs):
         session.commit()
 
 def data_to_GCS(csv_name: str, folder_name: str,
-                   bucket_name="task_ts_data-2", **kwargs):
+                   bucket_name="task-ts-data-2", **kwargs):
     hook = GoogleCloudStorageHook()
     data = load_data()
     df = pd.DataFrame(data=data)
