@@ -6,7 +6,8 @@ import urllib.request
 import pandas as pd
 from task_geo.data_sources import get_data_source
 
-DATA_DIR = Path(__file__).parent.parent.parent / "data"
+#DATA_DIR = Path(__file__).parent.parent.parent / "data"
+DATA_DIR = Path.cwd().parent / "data"
 
 
 def fetch_time_series() -> pd.DataFrame:
