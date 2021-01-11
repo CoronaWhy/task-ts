@@ -39,7 +39,7 @@ def fetch_time_series() -> pd.DataFrame:
 
 
 
-def load_df() -> pd.DataFrame:
+def load_data() -> pd.DataFrame:
     """Load time series data enriched with mobility data
     Returns:
         pd.DataFrame:
@@ -139,5 +139,5 @@ def _treat_mobility_missing_values(mobility_df: pd.DataFrame) -> pd.DataFrame:
 
 if __name__ == "__main__":
     # for testing only
-    df = load_df()
+    df = load_data()
     df.head().to_csv("test.csv")
