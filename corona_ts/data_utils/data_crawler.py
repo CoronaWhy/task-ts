@@ -136,50 +136,8 @@ def _treat_mobility_missing_values(mobility_df: pd.DataFrame) -> pd.DataFrame:
     return treated_df.set_index(["level"] + levels[::-1] + ["date"])
 
 
-def load_data() -> pd.DataFrame:
-    """Load time series data enriched with mobility data
-
-    Returns:
-        pd.DataFrame:
-    """
-    index_cols = ["level", "country", "region", "sub_region", "date"]
-    ts_df = time_series_formatter(fetch_time_series())
-    ts_df = ts_df.set_index(index_cols)
-    # drop duplicated rows
-    ts_df = ts_df[~ts_df.index.duplicated()]
-
-    mobility_df = fetch_mobility_data()
-    metrics = [
-        "retail_recreation",
-        "grocery_pharmacy",
-        "parks",
-        "transit_stations",
-        "workplaces",
-        "residential",
-    ]
-
-    mobility_df.loc[mobility_df["region"].isnull(), "level"] = "country"
-    mobility_df.loc[
-        (~mobility_df["region"].isnull())
-        & (mobility_df["sub_region"].isnull()),
-        "level",
-    ] = "region"
-    mobility_df.loc[
-        ~mobility_df["sub_region"].isnull(), "level"
-    ] = "sub_region"
-
-    mobility_df = mobility_df.set_index(index_cols)[metrics]
-    mobility_df.columns = ["mobility_" + x for x in metrics]
-
-    # treat missing values in mobility data
-    mobility_df = _treat_mobility_missing_values(mobility_df)
-
-    # Incorporate mobility data
-    enriched_ts_df = ts_df.reset_index().merge(mobility_df.reset_index(), how='inner',on=index_cols)
-    return enriched_ts_df.reset_index()
-
 
 if __name__ == "__main__":
     # for testing only
-    df = load_data()
+    df = load_df()
     df.head().to_csv("test.csv")
