@@ -197,6 +197,7 @@ def load_df() -> pd.DataFrame:
 if __name__=='__main__':
     if len(sys.argv) != 2:
         raise ValueError("Script needs directory path")
+    logger.info("Starting to crawl...")
     df = load_df()
     dir_path = Path(sys.argv[1])
     if dir_path.exists():
