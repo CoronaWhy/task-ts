@@ -15,11 +15,16 @@ def fetch_time_series() -> pd.DataFrame:
     Returns:
         pd.DataFrame: raw timeseries data at county/sub-region level
     """
+    """ Old function
+        if not time_series_path.exists():
+            logger.info("Time series not present locally, downloading...")
+            url = "https://coronadatascraper.com/timeseries.csv"
+            urllib.request.urlretrieve(url, time_series_path)
+    """
     time_series_path = DATA_DIR / "timeseries.csv"
-    if not time_series_path.exists():
-        logger.info("Time series not present locally, downloading...")
-        url = "https://coronadatascraper.com/timeseries.csv"
-        urllib.request.urlretrieve(url, time_series_path)
+    logger.info("Pulling current time series data, downloading...")
+    url = "https://coronadatascraper.com/timeseries.csv"
+    urllib.request.urlretrieve(url, time_series_path)
 
     time_series_df = pd.read_csv(time_series_path)
     return time_series_df
@@ -174,7 +179,7 @@ def load_data() -> pd.DataFrame:
     mobility_df = _treat_mobility_missing_values(mobility_df)
 
     # Incorporate mobility data
-    enriched_ts_df = pd.concat([ts_df, mobility_df], axis=1, join="inner")
+    enriched_ts_df = ts_df.reset_index().merge(mobility_df.reset_index(), how='inner',on=index_cols)
     return enriched_ts_df.reset_index()
 
 
