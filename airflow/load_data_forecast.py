@@ -58,12 +58,12 @@ def data_to_GCS(csv_name: str, folder_name: str,
     unique_df_list = []
     for col in columns_to_consider_for_uniqueness:
         df[col] = df[col].fillna('').apply(lambda x: x.replace(" ", "_"))
-    df[unique_column_name] = df[columns_to_consider_for_uniqueness[0]].str.cat(df[columns_to_consider_for_uniqueness[1:]], sep="_>
+    df[unique_column_name] = df[columns_to_consider_for_uniqueness[0]].str.cat(df[columns_to_consider_for_uniqueness[1:]], sep="__")
     for i, g in df.groupby('full_county'):
         df_code = g.copy()
         ts_count = len(df_code)
         if ts_count > minimum_datapoints_threshold:
-            df_code.reset_index(drop = True).loc[:, ~df.columns.str.contains('^Unnamed')].to_csv('{}.csv'.format(i), index = Fals>
+            df_code.reset_index(drop = True).loc[:, ~df.columns.str.contains('^Unnamed')].to_csv('{}.csv'.format(i), index = False)
             hook.upload(bucket_name,
                     object='{}/{}.csv'.format(folder_name, i),
                     filename='{}.csv'.format(i),
