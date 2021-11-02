@@ -4,7 +4,7 @@ from loguru import logger
 import urllib.request
 
 import pandas as pd
-from task_geo.data_sources import get_data_source
+from data_utils.geo_functions import mobility
 
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
@@ -82,7 +82,6 @@ def load_data() -> pd.DataFrame:
 
 
 def fetch_mobility_data() -> pd.DataFrame:
-    mobility = get_data_source("mobility")
     return mobility()
 
 
