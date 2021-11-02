@@ -8,7 +8,7 @@ def mobility_connector() -> pd.DataFrame:
     return pd.read_csv(MOBILITY_REPORTS_URL)
 
 
-def mobility_formatter(raw):
+def mobility_formatter(raw) -> pd.DataFrame:
     # Put column names in lowercase alphanumerical
     column_names = {
         'country_region_code': 'country_iso',
@@ -38,7 +38,7 @@ def mobility_formatter(raw):
     ]
     return raw[column_order]
 
-def mobility() -> None:
+def mobility() -> pd.DataFrame:
     """Retrieve  the mobility reports from Google.
     Arguments:
         None
