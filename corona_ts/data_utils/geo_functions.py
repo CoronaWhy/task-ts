@@ -38,7 +38,7 @@ def mobility_formatter(raw):
     ]
     return raw[column_order]
 
-def mobility():
+def mobility() -> None:
     """Retrieve  the mobility reports from Google.
     Arguments:
         None
