@@ -4,7 +4,7 @@ from loguru import logger
 import urllib.request
 
 import pandas as pd
-from data_utils.geo_functions import mobility
+from corona_ts.data_utils.geo_functions import mobility
 
 DATA_DIR = Path(__file__).parent.parent.parent / "data"
 
