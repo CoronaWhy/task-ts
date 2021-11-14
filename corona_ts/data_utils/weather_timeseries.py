@@ -3,7 +3,7 @@ from joblib import Parallel, delayed
 import pandas as pd
 from tqdm import tqdm
 
-from task_geo.dataset_builders.nasa import nasa
+from corona_ts.data_utils.weather_data import nasa
 from data_crawler import load_data, DATA_DIR
 
 
